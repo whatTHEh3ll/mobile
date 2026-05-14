@@ -1,4 +1,0 @@
-
-```bash 
-echo "Hello World"
-```
