@@ -1,14 +1,18 @@
----
+______________________________________________________________________
+
 title: "Xiaomi Bloatware List (2025) - Debloat HyperOS (Guide)"
 source: "https://technastic.com/xiaomi-bloatware-list-miui/"
 author:
-  - "[[Rakesh Shukla]]"
-published: 2025-06-06
-created: 2026-05-14
-description: "Find the list of safe-to-remove Xiaomi and MIUI bloatware. Learn how to uninstall system apps on MIUI 14 &13 via Xiaomi ADB/fastboot tools."
-tags:
-  - "clippings"
----
+
+- "\[[Rakesh Shukla]\]"
+  published: 2025-06-06
+  created: 2026-05-14
+  description: "Find the list of safe-to-remove Xiaomi and MIUI bloatware. Learn how to uninstall system apps on MIUI 14 &13 via Xiaomi ADB/fastboot tools."
+  tags:
+- "clippings"
+
+______________________________________________________________________
+
 Xiaomi is notorious for shipping its smartphones with numerous useless apps, often referred to as bloatware. Since such apps are installed as system apps, one can’t uninstall them from the app settings. It’s easy to remove bloatware on Xiaomi, Redmi, Mi, and POCO devices running HyperOS and MIUI via ADB without root.
 
 Recently, I shared a [list of secret codes for Xiaomi Redmi devices](https://technastic.com/xiaomi-redmi-secret-codes-list/) and the steps to uninstall them without root. Today, we’ll see how to uninstall the pre-installed apps on Xiaomi smartphones using ADB and bloatware removal tools.
@@ -371,8 +375,8 @@ You can download the full list of safe-to-remove bloatware on HyperOS with `pm u
 
 ## ADB Command to List System Apps
 
-You can use ADB shell commands to get the list of all installed apps regardless of the Xiaomi or Redmi phone model and OS version. By executing the following command, you can print the list of all system apps on your device.  
-`adb shell`  
+You can use ADB shell commands to get the list of all installed apps regardless of the Xiaomi or Redmi phone model and OS version. By executing the following command, you can print the list of all system apps on your device.\
+`adb shell`\
 `pm list packages -s`
 
 ![xiaomi miui safe to remove bloatware](https://technastic.com/wp-content/uploads/2020/07/xiaomi-miui-system-apps-adb.png)
@@ -386,27 +390,9 @@ You can uninstall bloatware on Xiaomi and Redmi devices running HyperOS using AD
 To use ADB, you must download and set up the [latest SDK Platform Tools](https://technastic.com/android-sdk-platform-tools-download/) on your computer. You can also [use ADB commands on your Xiaomi phone](https://technastic.com/adb-fastboot-android/) without root if you don’t have a laptop or PC.
 
 1. Extract the downloaded ‘ **platform-tools-latest-windows.zip** ‘ and open the folder.
-2. Launch the Command Prompt via the Windows context menu by pressing the **Shift key + Right-click button** on the mouse.
-3. Now type the following command in the CMD window and allow USB debugging to authorize ADB when prompted.
-	```
-	adb devices
-	```
-	[![allow usb debugging on xiaomi](https://technastic.com/wp-content/uploads/2020/07/allow-usb-debugging-xiaomi.jpg)](https://technastic.com/wp-content/uploads/2020/07/allow-usb-debugging-xiaomi.jpg)
-4. If you see the ‘ *list of attached devices* ‘ message, it means your Xiaomi or Redmi phone is successfully connected.
-5. Now, execute the command given below.
-	1. ```
-		adb shell
-		```
-6. When you get your phone’s codename on the command screen, run the ADB app uninstallation command mentioned below. Don’t forget to replace **<package name>** with the package name of the system app you want to uninstall, as shown in the screenshot.
-	```
-	pm uninstall --user 0 <package name>
-	```
-	![remove bloatware xiaomi adb](https://technastic.com/wp-content/uploads/2020/07/remove-bloatware-xiaomi-adb.jpg)
-	adb shell pm uninstall –user 0
-7. You can delete as many system apps as you want by running the above command one after another.
-
-In case you get any errors after uninstalling any stock app or removing an app by mistake, you can easily reinstall uninstalled apps on MIUI. Alternatively, you can also use [ADB AppControl and Shizuku app Canta or Package Manager to manage system apps](https://technastic.com/freeze-uninstall-system-apps-android/) on Android.
-
-This is all about the safe-to-remove bloatware on MIUI 14 and HyperOS. If you have any doubts or questions, let me know.
-
-**Read Next: [How to Flash Firmware Using Mi Flash Tool](https://technastic.com/mi-flash-tool-download-all-versions/)**
+1. Launch the Command Prompt via the Windows context menu by pressing the **Shift key + Right-click button** on the mouse.
+1. Now type the following command in the CMD window and allow USB debugging to authorize ADB when prompted.
+   ```
+   adb devices
+   ```
+   [![ALLOW USB DEBUGGING ON XIAOMI]

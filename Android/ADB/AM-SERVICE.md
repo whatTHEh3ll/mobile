@@ -1,8 +1,6 @@
----
-title: AM service ADB
-author:
-source: https://gist.github.com/tsohr/5711945
----
+______________________________________________________________________
+
+## title: AM service ADB author: source: https://gist.github.com/tsohr/5711945
 
 ```bash
 
@@ -112,5 +110,7 @@ am to-intent-uri: print the given Intent specification as an intent: URI.
     [--receiver-registered-only] [--receiver-replace-pending]
     [--selector]
     [<URI> | <PACKAGE> | <COMPONENT>]
+```
+
 ```
 ```

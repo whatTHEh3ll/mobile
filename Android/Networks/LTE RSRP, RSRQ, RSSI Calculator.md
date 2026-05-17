@@ -1,4 +1,5 @@
----
+______________________________________________________________________
+
 title: "LTE RSRP, RSRQ, RSSI Calculator"
 source: "https://custommapposter.com/article/lte-rsrp-rsrq-rssi-calculator-arimas/2420"
 author:
@@ -6,15 +7,18 @@ published: 2026-05-15
 created: 2026-05-15
 description: "In this page we present a simpleLTE RSRP & RSRQ calculator. The calculation is performed based on RSSI and channel Bandwidth considered. The formulas used in within the calculator is below, where:RSRP is the Reference Signal Received Power and is measured in a single REof the LTE REsource Block.Henc..."
 tags:
-  - "clippings"
----
+
+- "clippings"
+
+______________________________________________________________________
+
 In this page we present a simple **LTE RSRP & RSRQ** calculator. The calculation is performed based on RSSI and channel Bandwidth considered. The formulas used in within the calculator is below, where:
 
 See Also
 
 [How to Determine Good Cellular Signal Strength](https://custommapposter.com/article/how-to-determine-good-cellular-signal-strength/2420)
 
--  [**RSRP**](https://arimas.com/78-rsrp-and-rsrq-measurement-in-lte/) is the Reference Signal Received Power and is measured in a single REof the LTE REsource Block.Hence, RSRP is also called as average received power of a single reference signal RE (Resource Element)
+- [**RSRP**](https://arimas.com/78-rsrp-and-rsrq-measurement-in-lte/) is the Reference Signal Received Power and is measured in a single REof the LTE REsource Block.Hence, RSRP is also called as average received power of a single reference signal RE (Resource Element)
 - [**RSRQ**](https://arimas.com/78-rsrp-and-rsrq-measurement-in-lte/) is the Reference Signal Received Quality
 - [**RSSI**](https://arimas.com/78-rsrp-and-rsrq-measurement-in-lte/) is measured over entire bandwidth of occupied RBs (Resource Blocks)
 

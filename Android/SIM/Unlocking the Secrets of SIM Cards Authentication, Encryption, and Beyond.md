@@ -1,14 +1,18 @@
----
+______________________________________________________________________
+
 title: "Unlocking the Secrets of SIM Cards: Authentication, Encryption, and Beyond"
 source: "https://medium.com/@ali.pourbazargan/unlocking-the-secrets-of-sim-cards-authentication-encryption-and-beyond-4d7c8d8b3c58"
 author:
-  - "[[Ali Pourbazargan]]"
-published: 2024-04-18
-created: 2026-05-14
-description: "TL;DR: This article delves into the role of SIM cards in mobile security, primarily focusing on identity authentication and the complex encr"
-tags:
-  - "sim"
----
+
+- "\[[Ali Pourbazargan]\]"
+  published: 2024-04-18
+  created: 2026-05-14
+  description: "TL;DR: This article delves into the role of SIM cards in mobile security, primarily focusing on identity authentication and the complex encr"
+  tags:
+- "sim"
+
+______________________________________________________________________
+
 ![](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*VgcLUVE_lNCyi4PtNQ4sfg.jpeg)
 
 by DALLE!

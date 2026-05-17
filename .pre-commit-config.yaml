@@ -1,0 +1,25 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-case-conflict # checks for files that would conflict in case-insensitive filesystems.
+      - id: check-merge-conflict # checks for files that contain merge conflict strings.
+      - id: check-yaml # checks yaml files for parseable syntax.
+      - id: detect-private-key # detects the presence of private keys.
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: local
+    hooks:
+      - id: trufflehog
+        name: TruffleHog
+        description: Detect secrets in your data.
+        # For running trufflehog in docker, use the following entry instead:
+        entry: bash -c 'docker run --rm -v "$(pwd):/workdir" -i --rm trufflesecurity/trufflehog:latest git file:///workdir --since-commit HEAD --only-verified --fail --json'
+        language: system
+        stages: [pre-commit]
+  - repo: https://github.com/gitguardian/ggshield
+    rev: v1.50.3
+    hooks:
+      - id: ggshield
+        language_version: python3
+        stages: [pre-commit]

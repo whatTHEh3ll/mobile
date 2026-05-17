@@ -1,14 +1,18 @@
----
+______________________________________________________________________
+
 title: "5G networks: A comprehensive cheat sheet"
 source: https://www.techrepublic.com/article/5g-mobile-networks-a-cheat-sheet/
 author:
-  - "[[TechRepublic Staff]]"
-published: 2022-08-23
-created: 2026-05-15
-description: Looking for a guide on 5G networks? Get an introduction to 5G networks with our comprehensive cheat sheet.
-tags:
-  - Android
----
+
+- "\[[TechRepublic Staff]\]"
+  published: 2022-08-23
+  created: 2026-05-15
+  description: Looking for a guide on 5G networks? Get an introduction to 5G networks with our comprehensive cheat sheet.
+  tags:
+- Android
+
+______________________________________________________________________
+
 Looking for a guide on 5G networks? Get an introduction to 5G networks with our comprehensive cheat sheet.
 
 With the advent of widespread [Internet of Things](https://www.techrepublic.com/article/internet-of-things-iot-cheat-sheet/) adoption in enterprise applications including manufacturing, agriculture, healthcare and more — alongside an increasing dependence on smartphones and [always-connected computers](https://www.techrepublic.com/topic/hardware/) — the constraints of 4G LTE technology prompted mobile network operators to embark on [an accelerated rollout of 5G communications](https://www.techrepublic.com/topic/5g/) to keep pace with the current and upcoming network demands.
@@ -148,4 +152,4 @@ The security market for global 5G is expanding drastically, emphasizing the conc
 
 ***Note: This article was updated by Scott Matteson.***
 
-[![TechRepublic Staff](https://assets.techrepublic.com/uploads/2023/10/cropped-TR_Flag_wbg_400x400.png?w=256)](https://www.techrepublic.com/meet-the-team/us/techrepublic-staff/)
+[![TECHREPUBLIC STAFF]

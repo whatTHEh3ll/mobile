@@ -1,14 +1,18 @@
----
+______________________________________________________________________
+
 title: "SIM Card Secrets: Uncovering the Hidden Data Within"
 source: https://thetechylife.com/what-data-is-saved-on-a-sim-card/
 author:
-  - "[[John Elmore]]"
-published: 2024-10-08
-created: 2026-05-14
-description: As the tiny piece of plastic that connects our phones to the world, SIM cards are often overlooked, yet they hold a wealth of information about our mobile
-tags:
-  - sim
----
+
+- "\[[John Elmore]\]"
+  published: 2024-10-08
+  created: 2026-05-14
+  description: As the tiny piece of plastic that connects our phones to the world, SIM cards are often overlooked, yet they hold a wealth of information about our mobile
+  tags:
+- sim
+
+______________________________________________________________________
+
 As the tiny piece of plastic that connects our phones to the world, SIM cards are often overlooked, yet they hold a wealth of information about our mobile lives. But have you ever wondered, what data is saved on a SIM card? In this in-depth article, we’ll delve into the mysteries of SIM card storage, exploring the types of data that are saved, how they’re stored, and what implications this has for our privacy and security.
 
 ## The Anatomy Of A SIM Card
