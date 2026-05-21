@@ -1,0 +1,385 @@
+---
+title: run docker on your old android phone (no root needed)
+source: https://sagartamang.com/blog/docker-on-android
+author:
+  - "[[Sagar Tamang]]"
+published: 2026-02-21
+created: 2026-05-21
+description: Turn any Android phone into a Docker host using Termux, QEMU, and Alpine Linux — no rooting required. Yes, it actually works.
+tags:
+  - Android
+  - guide
+---
+## 🐳 Docker on Android: The Most Cursed Home Server You'll Ever Build
+
+Most people think running Docker requires a Linux server, a VPS, or at least a proper laptop. This guide shows you how to run a **full Docker engine** directly on an **Android phone** using **Termux + QEMU + Alpine Linux**.
+
+No root. No warranty void. Just Docker on a device that was collecting dust in your drawer.
+
+Fair warning: this took 5 days to figure out. This guide will save you those 5 days.
+
+---
+
+## 🛠️ Prerequisites
+
+- **Android Device:** Any stock, unmodified Android phone (Android 7+)
+- **Storage:** At least **10–12GB free space**
+- **RAM:** 2GB+ recommended
+- **Time:** ~30–60 minutes
+- **A sense of adventure** (mandatory)
+
+That's it. No root. No special kernel. No technical wizardry required — yet.
+
+---
+
+## 0\. (Optional) Get SSH Access First
+
+If you want to do this from a proper keyboard and screen instead of typing on glass, set up SSH first. Skip to Step 1 if you're happy working in Termux directly.
+
+Install Termux from [F-Droid](https://f-droid.org/) (not the Play Store — that version is outdated and broken).
+
+Then run:
+
+```bash
+pkg update && pkg upgrade
+
+pkg install openssh git curl wget
+```
+
+Start the SSH daemon and find your credentials:
+
+```bash
+sshd
+
+whoami      # your username (e.g. u0_a163)
+
+ifconfig    # find your phone's local IP address
+
+passwd      # set a password for SSH login
+```
+
+From your computer, connect with:
+
+```bash
+ssh -p 8022 <username>@<your-phone-ip>
+```
+
+Now you've got a real keyboard. Much better.
+
+---
+
+## 1\. Install Termux & QEMU
+
+Update Termux and install everything needed to run a virtual machine:
+
+```bash
+pkg update && pkg upgrade
+
+pkg install wget qemu-system-x86-64-headless qemu-utils
+```
+
+Here's what you're installing and why:
+
+**wget** — downloads files from the web via command line.
+
+**qemu-system-x86-64-headless** — a full machine emulator that runs an x86-64 VM on your phone, without a GUI. This is the engine that makes everything possible.
+
+**qemu-utils** — tools for creating and managing the virtual disk images your VM will live on.
+
+Now create a dedicated folder to keep everything organised:
+
+```bash
+mkdir virtual_machine
+
+cd virtual_machine/
+```
+
+---
+
+## 2\. Download Alpine Linux
+
+We're using **Alpine Linux** as the guest OS inside the VM. It's tiny, fast, and perfect for low-spec devices like a phone.
+
+Go to the [Alpine Linux downloads page](https://www.alpinelinux.org/downloads/), find the **VIRTUAL** section, right-click the **x86\_64** link and copy the address. Then download it:
+
+```bash
+wget <paste-link-here>
+```
+
+Your filename will look something like `alpine-virt-3.18.4-x86_64.iso`. Keep that name handy for the next steps.
+
+---
+
+## 3\. Create a Virtual Disk
+
+Create a 10GB virtual disk for Alpine to install onto. Don't worry — it won't actually consume 10GB immediately. It's a dynamic image that only uses space as needed.
+
+```bash
+qemu-img create -f qcow2 alpine.qcow2 10G
+```
+
+Breaking that down:
+
+- `qemu-img create` — creates a new disk image
+- `-f qcow2` — QEMU Copy On Write v2 format (supports snapshots, compression, encryption)
+- `alpine.qcow2` — the name of your virtual disk
+- `10G` — maximum capacity
+
+You should now have two files in your folder: the ISO and the `.qcow2` disk.
+
+---
+
+## 4\. Install Alpine Linux in the VM
+
+Boot the VM from the ISO to begin installation:
+
+```bash
+qemu-system-x86_64 \
+
+  -m 512 \
+
+  -netdev user,id=n1,hostfwd=tcp::2222-:22 \
+
+  -device virtio-net,netdev=n1 \
+
+  -cdrom alpine-virt-3.18.4-x86_64.iso \
+
+  -nographic \
+
+  -drive file=alpine.qcow2,format=qcow2
+```
+
+Flag breakdown:
+
+- `-m 512` — gives the VM 512MB of RAM
+- `-netdev user,id=n1,hostfwd=tcp::2222-:22` — user-mode networking, forwards port 2222 on your phone → port 22 (SSH) inside the VM
+- `-device virtio-net,netdev=n1` — attaches the virtual network interface
+- `-cdrom ...iso` — mounts the Alpine ISO as a virtual CD-ROM
+- `-nographic` — no GUI, everything runs in the terminal
+- `-drive file=alpine.qcow2,format=qcow2` — attaches the virtual disk
+
+After running this you'll see a blank screen for a while. This is normal. Sit back, relax, grab a coffee. The party is just getting started.
+
+Eventually you'll get a login prompt. Log in with username `root` and no password.
+
+### Set Up Internet Inside the VM
+
+Before installing, configure DNS so the VM can reach the internet:
+
+```bash
+mkdir -p /etc/udhcpc
+
+echo 'RESOLV_CONF="no"' >> /etc/udhcpc/udhcpc.conf
+
+echo -e "nameserver 8.8.8.8\nnameserver 8.8.4.4" >> /etc/resolv.conf
+```
+
+### Run the Alpine Installer
+
+```bash
+setup-alpine
+```
+
+Follow the prompts. Here are the important choices:
+
+- **Root password:** set something memorable — you'll need it to log back in
+- **Timezone:** type `?` to list options, pick yours
+- **NTP client:** type `none`
+- **Mirror:** press Enter to use default
+- **SSH server:** `openssh`
+- **Permit root SSH login:** choose `yes`
+- **Which disk to use:** type `sda`
+- **How to use disk:** type `sys`
+- **Erase disk:** type `y`
+
+Installation takes a few minutes. When complete:
+
+```bash
+poweroff
+
+exit
+```
+
+---
+
+## 5\. Boot Into Your Alpine VM
+
+Now boot into the installed system — no CD-ROM this time:
+
+```bash
+qemu-system-x86_64 \
+
+  -m 512 \
+
+  -netdev user,id=n1,hostfwd=tcp::2222-:22 \
+
+  -device virtio-net,netdev=n1 \
+
+  -nographic \
+
+  -drive file=alpine.qcow2,format=qcow2
+```
+
+Save that as a reusable script so you don't have to type it every time:
+
+```bash
+echo 'qemu-system-x86_64 -m 512 -netdev user,id=n1,hostfwd=tcp::2222-:22 -device virtio-net,netdev=n1 -nographic -drive file=alpine.qcow2,format=qcow2' > alpine.sh
+
+chmod +x alpine.sh
+```
+
+Log in with `root` and the password you set during installation. You can also SSH into the VM from a separate Termux session:
+
+```bash
+ssh root@localhost -p 2222
+```
+
+You now have a working Linux VM running on your phone. But we're not done — Docker is next.
+
+---
+
+## 6\. Install Docker Inside the VM
+
+Alpine keeps Docker in its **community** repository, which isn't enabled by default. Fix that first:
+
+```bash
+vi /etc/apk/repositories
+```
+
+You'll see 3 lines. Remove the `#` at the start of the third line (the one ending in `/community`). Save and exit (`:wq` in vi).
+
+Then update and install Docker:
+
+```bash
+apk update
+
+apk add docker
+```
+
+Start the Docker service:
+
+```bash
+service docker start
+```
+
+Docker is now running inside your Alpine VM. Next, we expose it to Termux.
+
+---
+
+## 7\. Forward Docker's Port to Termux
+
+Shut down the VM:
+
+```bash
+poweroff
+
+exit
+```
+
+Update your `alpine.sh` to also forward Docker's API port (2375):
+
+```bash
+echo 'qemu-system-x86_64 -m 512 -netdev user,id=n1,hostfwd=tcp::2222-:22,hostfwd=tcp::2375-:2375 -device virtio-net,netdev=n1 -nographic -drive file=alpine.qcow2,format=qcow2' > alpine.sh
+```
+
+Boot the VM again with the updated script:
+
+```bash
+./alpine.sh
+```
+
+Log in, start Docker, then run the Docker daemon listening on all interfaces:
+
+```bash
+service docker start
+
+dockerd -H tcp://0.0.0.0:2375 --iptables=false
+```
+
+This starts the Docker daemon and exposes it on port 2375 — which QEMU is forwarding straight to your Termux host. Leave this terminal running.
+
+---
+
+## 8\. Connect Termux to the Docker Daemon
+
+Open a **new** Termux session without closing the VM terminal.
+
+Tell your local Docker client where the daemon is:
+
+```bash
+export DOCKER_HOST=localhost:2375
+```
+
+Now test it:
+
+```bash
+docker run hello-world
+```
+
+If you see the Hello from Docker! message — congratulations. You just ran Docker on an Android phone without root. 🎉
+
+---
+
+## 🎯 What You Just Built
+
+Your phone is now a Docker host. Run any image that supports `x86_64` architecture:
+
+```bash
+docker run -it ubuntu bash        # full Ubuntu shell
+
+docker run -d nginx               # web server in background
+
+docker run -d -p 8080:80 nginx    # with port forwarding
+
+docker ps                         # check running containers
+
+docker images                     # see pulled images
+```
+
+---
+
+## 📋 Quick Command Reference
+
+| Command | What It Does | |---------|-------------| | `./alpine.sh` | Boot the Alpine VM | | `ssh root@localhost -p 2222` | SSH into VM from Termux | | `service docker start` | Start Docker service inside VM | | `dockerd -H tcp://0.0.0.0:2375 --iptables=false` | Expose Docker daemon | | `export DOCKER_HOST=localhost:2375` | Point Termux CLI at the daemon | | `docker run hello-world` | Verify everything works | | `docker ps` | List running containers | | `poweroff` | Shut down the VM cleanly |
+
+---
+
+## ⚠️ Troubleshooting
+
+**QEMU can't find PC BIOS?** Known issue on some Termux builds. [See this Stack Overflow fix.](https://stackoverflow.com/questions/66266448/qemu-could-not-load-pc-bios-bios-256k-bin/78804135)
+
+**Docker daemon keeps getting killed?** Android aggressively kills background processes. Run this in a separate Termux session to keep things alive:
+
+```bash
+termux-wake-lock
+```
+
+Also go to **Android Settings → Battery → Battery Optimization** and disable it for Termux.
+
+**`docker run` can't connect?** The `DOCKER_HOST` export doesn't persist between sessions. Add it to your `~/.bashrc` so it's always set:
+
+```bash
+echo 'export DOCKER_HOST=localhost:2375' >> ~/.bashrc
+```
+
+**Permissions errors?** Every Android device handles this differently depending on manufacturer and Android version. If you hit walls, check that the Docker service is running inside the VM before trying to connect from Termux.
+
+---
+
+## 🔑 The Rooting Shortcut (If You Have It)
+
+Here's the kicker — if your device is rooted, you can skip the entire Alpine Linux + QEMU setup. Rooted devices can interact with the kernel directly, meaning Docker can run natively in Termux without a VM at all.
+
+The non-root path works by routing Docker through a VM and forwarding its socket over a port — all that networking complexity is the price of keeping Android stock. Root removes the middleman entirely.
+
+But you don't need root. And now you know exactly how to do it without.
+
+---
+
+## Why This Slaps
+
+That old phone in your drawer just became a portable Docker host. Run local dev servers, self-host apps, experiment with containers — all without a laptop, a VPS, or a monthly cloud bill.
+
+The barrier to running your own infrastructure just hit zero.
+
+Now go break stuff (in containers, ethically).

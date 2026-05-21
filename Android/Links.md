@@ -26,3 +26,7 @@ ______________________________________________________________________
 ## Awesome Shizuku
 
 [https://github.com/timschneeb/awesome-shizuku.git](https://github.com/timschneeb/awesome-shizuku.git)
+
+## Termux
+
+[https://www.learntermux.tech/](https://www.learntermux.tech/)
